@@ -18,7 +18,11 @@ export function Home() {
   }
 
   function handleToggleTaskDone(id: number) {
-    //TODO - toggle task done if exists
+    const index = tasks.findIndex(task => task.id === id);
+    if (index >= 0) {
+      tasks[index].done = !tasks[index].done;
+    }
+    setTasks([...tasks]);
   }
 
   function handleRemoveTask(id: number) {
