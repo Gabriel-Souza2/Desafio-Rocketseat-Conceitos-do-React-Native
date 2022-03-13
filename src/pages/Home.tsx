@@ -9,7 +9,12 @@ export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   function handleAddTask(newTaskTitle: string) {
-    //TODO - add new task
+    const task: Task = {
+      id: Number(new Date().getTime().toString().slice(8)),
+      title: newTaskTitle,
+      done: false  
+    }
+    setTasks(oldTasks => [...oldTasks, task]);
   }
 
   function handleToggleTaskDone(id: number) {
