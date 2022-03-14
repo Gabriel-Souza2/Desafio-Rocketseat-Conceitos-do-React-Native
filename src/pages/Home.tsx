@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 
 import { Header } from '../components/Header';
 import { Task, TasksList } from '../components/TasksList';
@@ -9,12 +9,37 @@ export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   function handleAddTask(newTaskTitle: string) {
+   if (tasks.findIndex(task => task.title === newTaskTitle) >=0){
+    AlertDuplicateTask(newTaskTitle);
+   } 
+   else {
+    createTask(newTaskTitle)
+   }
+  }
+
+  function AlertDuplicateTask(task: string){
+    Alert.alert(
+      "Adicionar tarefa repitida? ",
+      `Deseja realmente adicionar a tarefa ${task} novamente?`,
+      [
+        {
+          text: "Cancel",
+          onPress: () => '',
+          style: "cancel"
+        },
+        { text: "OK", onPress: () =>  createTask(task)}
+      ]
+    );
+  }
+
+  function createTask(newTaskTitle: string) {
     const task: Task = {
       id: Number(new Date().getTime().toString().slice(8)),
       title: newTaskTitle,
       done: false  
     }
     setTasks(oldTasks => [...oldTasks, task]);
+
   }
 
   function handleToggleTaskDone(id: number) {
@@ -30,6 +55,7 @@ export function Home() {
       task => task.id != id 
     ));
   }
+
 
   return (
     <View style={styles.container}>
